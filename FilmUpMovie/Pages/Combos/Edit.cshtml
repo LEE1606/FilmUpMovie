@@ -1,0 +1,60 @@
+﻿@page "{id:int}"
+@model FilmUpMovie.Pages.Combos.EditModel
+
+@{
+    ViewData["Title"] = "Edit Combo";
+}
+
+<h1>Edit Combo</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ComboViewModel.Combo_ID" />
+
+            <div class="form-group">
+                <label asp-for="ComboViewModel.Name" class="control-label"></label>
+                <input asp-for="ComboViewModel.Name" class="form-control" />
+                <span asp-validation-for="ComboViewModel.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComboViewModel.Price" class="control-label"></label>
+                <input asp-for="ComboViewModel.Price" class="form-control" />
+                <span asp-validation-for="ComboViewModel.Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComboViewModel.Description" class="control-label"></label>
+                <input asp-for="ComboViewModel.Description" class="form-control" />
+                <span asp-validation-for="ComboViewModel.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="ComboViewModel.IsOnSale" class="form-check-input" />
+                <label asp-for="ComboViewModel.IsOnSale" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComboViewModel.ComboImageFile" class="control-label"></label>
+                <input asp-for="ComboViewModel.ComboImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ComboViewModel.ComboImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,83 @@
+﻿@page
+@model FilmUpMovie.Pages.Foods.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete Food Item</h1>
+
+<h3>Are you sure you want to delete this item?</h3>
+
+<div>
+    <h4>Food Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.Price)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.Description)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.Category)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.IsNewArrival)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.IsNewArrival)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.IsOnSale)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Food.IsOnSale)
+        </dd>
+
+        <!-- Displaying the food image as a thumbnail -->
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Food.FoodImage)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Food.FoodImage != null)
+            {
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Food.FoodImage)" alt="Food Image" class="img-thumbnail" style="width: 150px; height: auto;" />
+            }
+            else
+            {
+                <span class="text-muted">No Image Available</span>
+            }
+        </dd>
+    </dl>
+
+    <!-- Delete form -->
+    <form method="post">
+        <input type="hidden" asp-for="Food.F_ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+
+    <!-- Link to go back to the food list -->
+    <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+</div>
+

@@ -1,0 +1,113 @@
+﻿@page
+@model FilmUpMovie.Pages.MainModel
+@{
+    ViewData["Title"] = "Main Page";
+}
+
+<div class="container">
+    <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Food And Beverage</h1>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <!-- Food Section -->
+        <section class="foods">
+            <h2>Food</h2>
+            <div class="product-grid">
+                @foreach (var product in Model.Foods)
+                {
+                    <div class="card">
+                        @if (product.FoodImage != null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(product.FoodImage)" alt="Food Image" class="product-img-small" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default-food.jpg" alt="Food Image" class="product-img-small" />
+                        }
+                        <h3>@product.Name</h3>
+                        <p class="price">@product.Price.ToString("C")</p> <!-- Format as currency -->
+                        <p>@product.Description</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="foodId" value="@product.F_ID" />
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    </div>
+                }
+            </div>
+            <a asp-page="FoodMain" class="browse-all">Browse All Food</a>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Beverages Section -->
+        <section class="beverages">
+            <h2>Beverages</h2>
+            <div class="product-grid">
+                @foreach (var beverage in Model.Beverages)
+                {
+                    <div class="card">
+                        @if (beverage.BeverageImage != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(beverage.BeverageImage)" alt="Beverage Image" class="product-img-small" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default-beverage.jpg" alt="Beverage Image" class="product-img-small" />
+                        }
+                        <h3>@beverage.Name</h3>
+                        <p class="price">@beverage.Price.ToString("C")</p>
+                        <p>@beverage.Description</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="beverageId" value="@beverage.B_ID" />
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    </div>
+                }
+            </div>
+            <a asp-page="BeverageMain" class="browse-all">Browse All Beverages</a>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Combo Section -->
+        <section class="combo">
+            <h2>Combo Offers</h2>
+            <div class="product-grid">
+                @foreach (var combo in Model.Combos)
+                {
+                    <div class="card">
+                        @if (combo.ComboImage != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(combo.ComboImage)" alt="Combo Image" class="product-img-small" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default-combo.jpg" alt="Combo Image" class="product-img-small" />
+                        }
+                        <h3>@combo.Name</h3>
+                        <p class="price">@combo.Price.ToString("C")</p>
+                        <p>@combo.Description</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="comboId" value="@combo.Combo_ID" />
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    </div>
+                }
+            </div>
+            <a asp-page="ComboMain" class="browse-all">Browse All Combos</a>
+        </section>
+    </main>
+</div>

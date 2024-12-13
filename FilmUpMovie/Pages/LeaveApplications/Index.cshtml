@@ -1,0 +1,101 @@
+﻿@page
+@model FilmUpMovie.Pages.LeaveApplications.IndexModel
+@using FilmUpMovie.Authorization
+
+
+@{
+    ViewData["Title"] = "Leave Applications";
+}
+
+<h1>Leave Applications</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveApplications[0].Staff.StaffName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.LeaveApplications[0].LeaveAppDate)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.LeaveApplications[0].LeaveAppTime)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.LeaveApplications[0].LeaveAppReason)
+            </th>
+            <th class="text-center">
+                Status
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveApplications)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Staff.StaffName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.LeaveAppDate)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.LeaveAppTime)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.LeaveAppReason)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <!-- Check for Edit permission -->
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, LeaveApplicationOperations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm">Edit</a>
+                    }
+
+                    <!-- Check for Delete permission -->
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, LeaveApplicationOperations.Delete)).Succeeded)
+                    {
+                        <a asp-page="./Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">Delete</a>
+                    }
+
+                    <!-- Details Link -->
+                    <a asp-page="./Details" asp-route-id="@item.ID" class="btn btn-info btn-sm">Details</a>
+
+                    <!-- Approve/Reject buttons for Managers and Admins -->
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, LeaveApplicationOperations.Approve)).Succeeded)
+                    {
+                        <form style="display:inline;" method="post" asp-page-handler="Approve" asp-route-id="@item.ID">
+                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                    }
+
+                    @if ((await AuthorizationService.AuthorizeAsync(User, item, LeaveApplicationOperations.Reject)).Succeeded)
+                    {
+                        <form style="display:inline;" method="post" asp-page-handler="Reject" asp-route-id="@item.ID">
+                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

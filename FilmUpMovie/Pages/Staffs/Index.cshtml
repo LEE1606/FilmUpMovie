@@ -1,0 +1,120 @@
+﻿@page
+@model FilmUpMovie.Pages.Staffs.IndexModel
+
+@{
+    ViewData["Title"] = "Staffs";
+}
+
+<h1>Staff List</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => model.Staff[0].StaffName)
+                </a>
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Staff[0].StaffAge)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Staff[0].StaffEmail)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Staff[0].StaffPhoneNumber)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Staff[0].StaffAddress)
+            </th>
+            <th class="text-center">
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                    @Html.DisplayNameFor(model => model.Staff[0].StaffWorkDate)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Staff)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.StaffAge)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.StaffEmail)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.StaffPhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffAddress)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.StaffWorkDate)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-page="./Details" asp-route-id="@item.ID" class="btn btn-info btn-sm">Details</a>
+                    <a asp-page="./Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-lg-end">
+        @if (Model.Staff.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-route-pageIndex="@(Model.Staff.PageIndex - 1)">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        }
+
+        @for (var i = 1; i <= Model.Staff.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Staff.PageIndex ? "active" : "")">
+                <a class="page-link" asp-route-pageIndex="@i">@i</a>
+            </li>
+        }
+
+        @if (Model.Staff.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-route-pageIndex="@(Model.Staff.PageIndex + 1)">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+        }
+    </ul>
+</nav>

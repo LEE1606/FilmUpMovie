@@ -1,0 +1,116 @@
+﻿@page
+@model FilmUpMovie.Pages.ShowTimes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>ShowTime</h1>
+
+<p>
+    @if (User.IsInRole("ShowTimeAdministrators"))
+    {
+        <a asp-page="./Create" class="btn btn-primary">Create New</a>
+    }
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ShowTime[0].Movie.Title)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.ShowTime[0].Movie.ReleaseDate)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowTime[0].ShowRoom.Experience)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowTime[0].Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ShowTime) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Movie.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShowRoom.Experience)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                   User, item,
+                   Operations.Create)).Succeeded)
+                    {
+                        <a asp-page="./Create" asp-route-id="@item.ShowTimeID">Create</a>
+                        <text> | </text>
+                    }
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                   User, item,
+                   Operations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.ShowTimeID">Edit</a>
+                        <text> | </text>
+                    }
+
+                    <a asp-page="./Details" asp-route-id="@item.ShowTimeID">Details</a>
+
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                   User, item,
+                   Operations.Delete)).Succeeded)
+                    {
+                        <text> | </text>
+                        <a asp-page="./Delete" asp-route-id="@item.ShowTimeID">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.ShowTime.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.ShowTime.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.ShowTime.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.ShowTime.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

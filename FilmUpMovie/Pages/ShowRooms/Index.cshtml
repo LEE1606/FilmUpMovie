@@ -1,0 +1,65 @@
+﻿@page "{cinemaName?}"
+@model FilmUpMovie.Pages.ShowRooms.IndexModel
+
+@{
+    ViewData["Title"] = "ShowRooms - " + Model.CinemaName;
+}
+
+<div class="container mt-5">
+    <h1>ShowRooms @Model.CinemaName</h1>
+
+    <!-- Check if the user has permissions to create a new showroom -->
+    @if (User.IsInRole("ShowRoomAdministrator"))
+
+    {
+        <a asp-page="./Create" asp-route-cinemaName="@Model.CinemaName" class="btn btn-primary mb-4">Create New ShowRoom</a>
+    }
+
+    @if (!Model.ShowRoom.Any())
+    {
+        <div class="alert alert-warning">
+            No showrooms found for @Model.CinemaName.
+        </div>
+    }
+    else
+    {
+        <!-- Showrooms List -->
+        <div class="row">
+            @foreach (var showroom in Model.ShowRoom)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@showroom.Cinema.Name</h5>
+                            <p class="card-text">
+                                Room Number: @showroom.RoomNum<br />
+                                Capacity: @showroom.TotalSeat<br />
+                                Experience: @showroom.Experience<br />
+                            </p>
+                            <!-- Link to ShowRoom Details -->
+                            <a asp-page="./Details" asp-route-id="@showroom.ShowRoomID" class="btn btn-info btn-sm">View Details</a>
+
+                            <!-- Edit and Delete options for authorized users -->
+                            <div class="mt-2">
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                               User, showroom,
+                               Operations.Update)).Succeeded)
+                                {
+                                    <a asp-page="./Edit" asp-route-id="@showroom.ShowRoomID" class="btn btn-warning btn-sm">Edit</a>
+                                }
+
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                               User, showroom,
+                               Operations.Delete)).Succeeded)
+                                {
+                                    <a asp-page="./Delete" asp-route-id="@showroom.ShowRoomID" class="btn btn-danger btn-sm">Delete</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

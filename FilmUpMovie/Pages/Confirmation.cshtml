@@ -1,0 +1,129 @@
+﻿@page
+@model FilmUpMovie.Pages.ConfirmationModel
+
+@{
+    ViewData["Title"] = "Booking Confirmation";
+}
+
+<div class="confirmation-container">
+    <!-- Confirmation Header Section -->
+    <div class="confirmation-header">
+        <h2>Your Booking is Confirmed!</h2>
+        <p class="confirmation-subtext">Thank you for choosing FilmUp! Your movie booking has been successfully processed.</p>
+    </div>
+
+    <!-- Confirmation Content Section -->
+    <div class="confirmation-content">
+        <div class="details">
+            <p><strong>Movie:</strong> @(Model.ShowTime?.Movie?.Title ?? "N/A")</p>
+            <p><strong>Showtime:</strong> @Model.ShowTime.Time</p>
+            <p><strong>Seat(s):</strong> @(Model.SelectedSeats != null ? string.Join(", ", Model.SelectedSeats) : "No seats selected")</p>
+            <p><strong>Ticket Price:</strong> RM @Model.TotalCost.ToString("0.00")</p>
+        </div>
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="actions">
+        <!-- 'Back' button -->
+        <a href="/Index" class="back-button">Back to Home</a>
+
+        <!-- 'Download Receipt' button -->
+        <form method="get" asp-page="/DownloadReceipt">
+            <input type="hidden" name="totalCost" value="@Model.TotalCost" />
+            <input type="hidden" name="seats" value="@string.Join(",", Model.SelectedSeats)" />
+            <button type="submit" class="download-button">Download Receipt</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    .confirmation-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        font-family: 'Arial', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .confirmation-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .confirmation-header h2 {
+            font-size: 2rem;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-header .confirmation-subtext {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+    .confirmation-content {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .details {
+        margin-bottom: 20px;
+    }
+
+        .details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .details strong {
+            font-weight: bold;
+        }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .back-button,
+    .download-button {
+        padding: 12px 24px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        width: 160px;
+        transition: background-color 0.3s ease;
+    }
+
+        .back-button:hover,
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+
+    .download-button {
+        background-color: #28a745;
+    }
+
+        .download-button:hover {
+            background-color: #218838;
+        }
+</style>

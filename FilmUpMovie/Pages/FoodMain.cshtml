@@ -1,0 +1,46 @@
+﻿@page
+@model FilmUpMovie.Pages.FoodMainModel
+@{
+    ViewData["Title"] = "Food Items";
+}
+
+<div class="container">
+    <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Food</h1>
+        </div>
+    </header>
+
+    <!-- Food Section -->
+    <main>
+        <section class="foods">
+            <div class="product-grid">
+                @foreach (var food in Model.Foods)
+                {
+                    <div class="card">
+                        @if (food.FoodImage != null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(food.FoodImage)" alt="Food Image" class="product-img-small" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default-food.jpg" alt="Food Image" class="product-img-small" />
+                        }
+                        <h3>@food.Name</h3>
+                        <p class="price">@food.Price.ToString("C")</p>
+                        <p>@food.Description</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="foodId" value="@food.F_ID" />
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </section>
+    </main>
+</div>

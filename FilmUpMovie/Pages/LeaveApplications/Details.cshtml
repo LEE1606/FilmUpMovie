@@ -1,0 +1,23 @@
+﻿@page
+@model FilmUpMovie.Pages.LeaveApplications.DetailsModel
+
+<h1>Leave Application Details</h1>
+
+<div>
+    <h2>Leave Application</h2>
+    <p><strong>ID:</strong> @Model.LeaveApplication.ID</p>
+    <p><strong>Date:</strong> @Model.LeaveApplication.LeaveAppDate.ToShortDateString()</p>
+    <p><strong>Time:</strong> @Model.LeaveApplication.LeaveAppTime</p>
+    <p><strong>Reason:</strong> @Model.LeaveApplication.LeaveAppReason</p>
+    <p><strong>Status:</strong> @Model.LeaveApplication.Status</p>
+</div>
+
+<div>
+    <h2>Staff Information</h2>
+    <p><strong>Name:</strong> @Model.LeaveApplication.Staff.StaffName</p>
+    <p><strong>Email:</strong> @Model.LeaveApplication.Staff.StaffEmail</p>
+    <p><strong>Phone:</strong> @Model.LeaveApplication.Staff.StaffPhoneNumber</p>
+</div>
+
+<a asp-page="./Index">Back to List</a>
+

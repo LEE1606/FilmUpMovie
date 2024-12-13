@@ -1,0 +1,242 @@
+﻿@page
+@model FilmUpMovie.Pages.Blogging.BlogPageModel
+
+@{
+    ViewData["Title"] = "Filmup Blog";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Bootstrap Icons (Optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@300;400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-light text-dark">
+
+    <header class="d-flex justify-content-between align-items-center p-3 border-bottom border-light">
+        <!-- Logo -->
+        <div>
+            <img src="/lib/logo.png" alt="Filmup Blog" style="height: 60px;" />
+            <span class="fs-3 ms-2 text-white">Filmup Blog</span>
+
+        </div>
+        <!-- Menu -->
+        <a class="btn btn-info mt-2" href="/Blogging/Create">Write Blog</a>
+    </header>
+
+    <main class="container mt-5">
+        <!-- Search Section -->
+        <div class="mb-4">
+            <form method="get">
+                <label for="searchBox" class="form-label text-dark">Search for Movies or Blogs:</label>
+                <input type="text" id="searchBox" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search..." />
+                <button type="submit" class="btn btn-info mt-2">Search</button>
+            </form>
+        </div>
+
+        <!-- Hottest Trend Section -->
+        @if (Model.HottestTrend != null)
+        {
+            <div class="card mb-4 hottest-trend-card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="@Model.HottestTrend.ImageUrl" alt="Hottest Trend" class="img-fluid rounded-start hottest-trend-image" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title display-4 text-info">🔥 Hottest Trend: @Model.HottestTrend.Title</h5>
+                            <p class="card-text">@Model.HottestTrend.Content.Substring(0, Math.Min(Model.HottestTrend.Content.Length, 200))...</p>
+                            <p class="card-text">
+                                <small class="text-muted">Posted on @Model.HottestTrend.DatePosted.ToString("yyyy/MM/dd hh:mm tt")</small>
+                            </p>
+                            <p class="card-text">
+                                <i class="bi bi-hand-thumbs-up me-2"></i>@Model.HottestTrend.LikeCount
+                                <i class="bi bi-chat ms-4 me-2"></i>@Model.HottestTrend.Comments.Count()
+                            </p>
+                            <a href="/Blogging/BlogDetails?blogId=@Model.HottestTrend.Id" class="btn btn-lg btn-info">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Blog Display -->
+        @if (Model.Blogs.Any())
+        {
+            <div class="row g-4">
+                @foreach (var blog in Model.Blogs)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card blog-card">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <img src="@blog.ImageUrl" alt="Blog Image" class="img-fluid rounded-start blog-image" />
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-dark">@blog.Title</h5>
+                                        <p class="card-text"><small class="text-muted">Posted on @blog.DatePosted.ToString("yyyy/MM/dd hh:mm tt")</small></p>
+                                        <p class="card-text text-dark">@blog.Content.Substring(0, Math.Min(blog.Content.Length, 100))...</p>
+
+                                        <!-- Like and Comment Count -->
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-hand-thumbs-up me-2"></i>@blog.LikeCount
+                                                <i class="bi bi-chat ms-4 me-2"></i>@blog.Comments.Count()
+                                            </div>
+                                            <a href="/Blogging/BlogDetails?blogId=@blog.Id" class="btn btn-info">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No blogs found matching your search criteria.</p>
+        }
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+<style>
+    /* Hottest Trend Card */
+    .hottest-trend-card {
+        background-color: #f0f8ff; /* Pale blue background */
+        border: 2px solid #add8e6; /* Light blue border */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
+
+    .hottest-trend-image {
+        height: 250px;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+    .hottest-trend-card .card-title {
+        font-size: 2rem;
+        color: #4682b4; /* Steel blue title */
+        font-weight: bold;
+    }
+
+    .hottest-trend-card .btn {
+        background-color: #4682b4; /* Steel blue button */
+        border-color: #4682b4;
+        color: white;
+    }
+
+        .hottest-trend-card .btn:hover {
+            background-color: #5f9ea0; /* Light cyan on hover */
+            border-color: #5f9ea0;
+        }
+
+    .blog-card {
+        background-color: #e0f7fa; /* Light cyan background */
+        border: 1px solid #b2ebf2;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 450px; /* Increase the height of the card to fit all content */
+        overflow: hidden; /* Prevent overflow */
+    }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+    .blog-image {
+        width: 100%; /* Ensure image fills the width of the container */
+        height: 200px; /* Fixed height for the image */
+        object-fit: cover; /* Ensures the image covers the area without distortion */
+        border-radius: 12px;
+    }
+
+    .blog-card .card-body {
+        height: calc(100% - 200px); /* Adjust card body height based on the image height */
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Distribute space for text and buttons */
+    }
+
+    .blog-card .card-title {
+        font-size: 1.5rem;
+        color: #4682b4;
+    }
+
+    .blog-card .card-text {
+        color: #333;
+        font-size: 1rem;
+        flex-grow: 1; /* Ensure content stretches to take up available space */
+    }
+
+    .blog-card .btn {
+        background-color: #4682b4;
+        color: white;
+        border: none;
+        margin-top: 10px; /* Add space between the content and button */
+    }
+
+        .blog-card .btn:hover {
+            background-color: #5f9ea0;
+        }
+
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .d-flex .bi {
+            font-size: 1.2rem; /* Adjust icon size */
+        }
+
+    .blog-card .d-flex {
+        margin-top: auto; /* Push this to the bottom */
+    }
+
+
+    /* General Styling */
+    body {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    header {
+        background-color: #4682b4; /* Steel blue header */
+        color: white;
+    }
+
+    .btn-info {
+        background-color: #4682b4;
+        border-color: #4682b4;
+        color: white;
+    }
+
+        .btn-info:hover {
+            background-color: #5f9ea0;
+            border-color: #5f9ea0;
+        }
+
+    .btn-outline-info {
+        color: #4682b4;
+        border-color: #4682b4;
+    }
+
+        .btn-outline-info:hover {
+            background-color: #5f9ea0;
+            border-color: #5f9ea0;
+        }
+</style>

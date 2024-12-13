@@ -1,0 +1,178 @@
+﻿@page
+@model FilmUpMovie.Pages.Blogging.BlogDetailsModel
+
+@{
+    ViewData["Title"] = Model.Blog.Title;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-light text-dark">
+
+    <header class="d-flex justify-content-between align-items-center p-3 border-bottom border-light" style="background-color: #4682b4; color: white;">
+        <div>
+            <img src="/lib/logo.png" alt="Filmup Blog" style="height: 60px;" />
+            <span class="fs-3 ms-2">Filmup Blog</span>
+        </div>
+        <a class="btn btn-outline-light mt-2" href="/Blogging/BlogPage">Back to Blogs</a>
+    </header>
+
+    <main class="container mt-5">
+        <h2 class="display-4 text-center text-info">@Model.Blog.Title</h2>
+
+        <!-- Blog Image -->
+        @if (!string.IsNullOrWhiteSpace(Model.Blog.ImageUrl))
+        {
+            <img src="@Model.Blog.ImageUrl" alt="Blog Image" class="img-fluid rounded-3 mb-4" />
+        }
+
+        <!-- Blog Content -->
+        <p class="lead text-muted">@Model.Blog.Content</p>
+        <p><strong class="text-info">Posted on:</strong> @Model.Blog.DatePosted.ToString("MMMM dd, yyyy")</p>
+
+        <!-- Like Section -->
+        <form method="post" asp-page-handler="Like">
+            <input type="hidden" name="blogId" value="@Model.Blog.Id" />
+            <button type="submit" class="btn btn-info mt-3">Like (@Model.Blog.LikeCount)</button>
+        </form>
+
+        <hr />
+
+        <!-- Comment Section -->
+        <h4 class="text-info">Leave a Comment</h4>
+        <form method="post" asp-page-handler="Comment">
+            <input type="hidden" name="blogId" value="@Model.Blog.Id" />
+            <div class="form-group">
+                <textarea asp-for="NewComment" class="form-control" placeholder="Write your comment here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-info mt-2">Submit Comment</button>
+        </form>
+
+        <hr />
+
+        <!-- Comments Display -->
+        <h4 class="text-info">Comments (@Model.Blog.Comments.Count)</h4>
+        @if (Model.Blog.Comments != null && Model.Blog.Comments.Any())
+        {
+            <ul class="list-group">
+                @foreach (var comment in Model.Blog.Comments.OrderByDescending(c => c.DatePosted))
+                {
+                    <li class="list-group-item">
+                        <p>@comment.Text</p>
+                        <small class="text-muted">Posted on @comment.DatePosted.ToString("MMMM dd, yyyy HH:mm")</small>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No comments yet. Be the first to comment!</p>
+        }
+
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<style>
+    /* General Page Styling */
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f0f8ff; /* Pale blue background */
+    }
+
+    h2, h4 {
+        color: #4682b4; /* Steel blue for headers */
+    }
+
+    header {
+        background-color: #4682b4; /* Steel blue header */
+        color: white;
+    }
+
+        header .btn-outline-light {
+            border-color: white;
+            color: white;
+        }
+
+            header .btn-outline-light:hover {
+                background-color: white;
+                color: #4682b4;
+            }
+
+    /* Blog Content */
+    img.img-fluid {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    p.lead {
+        font-size: 1.2rem;
+        line-height: 1.6;
+    }
+
+    /* Like Button */
+    button.btn-info {
+        background-color: #4682b4;
+        border-color: #4682b4;
+        color: white;
+    }
+
+        button.btn-info:hover {
+            background-color: #5f9ea0;
+            border-color: #5f9ea0;
+        }
+
+    /* Comment Section */
+    textarea.form-control {
+        border-radius: 12px;
+        border: 1px solid #b2ebf2; /* Light cyan border */
+    }
+
+    button.btn-info {
+        background-color: #4682b4;
+        border-color: #4682b4;
+        color: white;
+    }
+
+        button.btn-info:hover {
+            background-color: #5f9ea0;
+            border-color: #5f9ea0;
+        }
+
+    /* Comments List */
+    ul.list-group {
+        margin-top: 15px;
+        background-color: #e0f7fa; /* Light cyan background */
+        border: 1px solid #b2ebf2;
+        border-radius: 12px;
+    }
+
+    .list-group-item {
+        background-color: #ffffff;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+        .list-group-item:hover {
+            background-color: #f0f8ff; /* Pale blue hover effect */
+        }
+
+    /* General Buttons */
+    .btn {
+        border-radius: 12px;
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+</style>

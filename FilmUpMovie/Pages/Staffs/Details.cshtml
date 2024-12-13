@@ -1,0 +1,72 @@
+﻿@page
+@model FilmUpMovie.Pages.Staffs.DetailsModel
+
+<h1>Staff Details</h1>
+
+<div>
+    <h2>Staff Information</h2>
+    <p><strong>Name:</strong> @Model.Staff.StaffName</p>
+    <p><strong>Email:</strong> @Model.Staff.StaffEmail</p>
+</div>
+
+<div>
+    <h2>Payments</h2>
+    @if (Model.Payments.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Total Work Time</th>
+                    <th>Pay Date</th>
+                    <th>Pay Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var payment in Model.Payments)
+                {
+                    <tr>
+                        <td>@payment.TotalWorkTime</td>
+                        <td>@payment.PayDate.ToShortDateString()</td>
+                        <td>@payment.PayAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No payment data available.</p>
+    }
+</div>
+
+<div>
+    <h2>Leave Applications</h2>
+    @if (Model.LeaveApplications.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var leave in Model.LeaveApplications)
+                {
+                    <tr>
+                        <td>@leave.LeaveAppDate.ToShortDateString()</td>
+                        <td>@leave.LeaveAppTime</td>
+                        <td>@leave.LeaveAppReason</td>
+                        <td>@leave.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No leave application data available.</p>
+    }
+</div>

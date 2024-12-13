@@ -1,0 +1,63 @@
+﻿@page
+@model FilmUpMovie.Pages.Combos.CreateModel
+
+@{
+    ViewData["Title"] = "Create Combo";
+}
+
+<h1>Create Combo</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <!-- Combo Name -->
+    <div class="form-group">
+        <label asp-for="ComboViewModel.Name" class="control-label"></label>
+        <input asp-for="ComboViewModel.Name" class="form-control" />
+        <span asp-validation-for="ComboViewModel.Name" class="text-danger"></span>
+    </div>
+
+    <!-- Combo Price -->
+    <div class="form-group">
+        <label asp-for="ComboViewModel.Price" class="control-label"></label>
+        <input asp-for="ComboViewModel.Price" class="form-control" />
+        <span asp-validation-for="ComboViewModel.Price" class="text-danger"></span>
+    </div>
+
+    <!-- Combo Description -->
+    <div class="form-group">
+        <label asp-for="ComboViewModel.Description" class="control-label"></label>
+        <textarea asp-for="ComboViewModel.Description" class="form-control"></textarea>
+        <span asp-validation-for="ComboViewModel.Description" class="text-danger"></span>
+    </div>
+
+    <!-- Combo Image Upload -->
+    <div class="form-group">
+        <label asp-for="ComboViewModel.ComboImageFile" class="control-label"></label>
+        <input asp-for="ComboViewModel.ComboImageFile" type="file" class="form-control" />
+        <span asp-validation-for="ComboViewModel.ComboImageFile" class="text-danger"></span>
+    </div>
+
+    <!-- Combo On Sale -->
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="ComboViewModel.IsOnSale" /> Is this combo on sale?
+        </label>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group">
+        <input type="submit" value="Create Combo" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

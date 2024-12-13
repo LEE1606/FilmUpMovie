@@ -1,0 +1,157 @@
+﻿@page
+@model FilmUpMovie.Pages.Cinemas.IndexModel
+
+@{
+    ViewData["Title"] = "Cinemas";
+}
+
+
+<div class="justify-content-between container mt-5">
+    <h1>Cinemas</h1>
+
+    <!-- Admin/Manager Create Button -->
+    @if (User.IsInRole("CinemaAdministrator"))
+    {
+        <a asp-page="./Create" class="btn btn-primary mb-4">Create New Cinema</a>
+    }
+
+    <!-- Filter and Search Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <!-- Location Filter -->
+        <div>
+            <label for="locationFilter" class="form-label">Filter by Location:</label>
+            <select id="locationFilter" class="form-select d-inline-block w-auto me-2">
+                <option value="">All Locations</option>
+                @foreach (var location in Model.Locations)
+                {
+                    <option value="@location">@location</option>
+                }
+            </select>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section d-flex">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search Cinema" value="@Model.CurrentFilter" />
+            <button class="btn btn-warning ms-2" onclick="applyFilters()">Search</button>
+            <button class="btn btn-dark ms-2" onclick="resetFilters()">Reset</button>
+        </div>
+    </div>
+
+    <!-- Cinema Grid -->
+    <div class="row">
+        @foreach (var cinema in Model.Cinemas)
+        {
+            <div class="col-md-4 mb-4">
+                <a asp-page="/ShowRooms/Index" asp-route-cinemaName="@cinema.Name" class="card-link">
+                    <div class="card shadow-sm">
+                        <!-- Cinema Image -->
+                       <div class="image-container">
+                            <img src="@(cinema.CinemaImage != null
+                                ? $"data:image/jpeg;base64,{Convert.ToBase64String(cinema.CinemaImage)}"
+                                : "/images/placeholder.jpg")"
+                                 class="card-img-top cinema-image"
+                                 alt="Cinema Image" />
+                       </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">@cinema.Name</h5>
+                            <p class="card-text">
+                                Location: @cinema.Location<br />
+                                Number of Halls: @cinema.NumOfHall
+                            </p>
+                        
+
+                         <!-- Admin/Manager Actions -->
+                            <div class="mt-2">
+                                @if (User.IsInRole(Constants.CinemaAdministratorsRole) || User.IsInRole(Constants.CinemaManagerRole))
+                           {
+                               <a asp-page="./Details" asp-route-id="@cinema.CinemaID" class="btn btn-warning btn-sm">Details</a>
+
+                                    @if (cinema.CanEdit)
+                                    {
+                                        <a asp-page="./Edit" asp-route-id="@cinema.CinemaID" class="btn btn-warning btn-sm">Edit</a>
+                                    }
+
+                                    @if (cinema.CanDelete)
+                                    {
+                                        <a asp-page="./Delete" asp-route-id="@cinema.CinemaID" class="btn btn-danger btn-sm">Delete</a>
+                                    }
+                           }
+                           </div>
+                       </div>
+                   </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function applyFilters() {
+        const location = document.getElementById("locationFilter").value;
+        const searchInput = document.getElementById("searchInput").value;
+
+        let queryParams = [];
+        if (location) queryParams.push(`location=${encodeURIComponent(location)}`);
+        if (searchInput) queryParams.push(`searchString=${encodeURIComponent(searchInput)}`);
+
+        window.location.href = "?" + queryParams.join("&");
+    }
+
+    function resetFilters() {
+        window.location.href = "?";
+    }
+</script>
+
+<style>
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px; /* Rounded corners for the image container */
+        height: 300px; /* Set a fixed height for the container */
+        flex-shrink: 0; /* Prevents the image from shrinking */
+    }
+
+    .cinema-image {
+        object-fit: cover; /* Ensures image fills the container while maintaining aspect ratio */
+        width: 100%;
+        height: 100%; /* Ensure the image takes the full container height */
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Make sure the card takes up the full space */
+    }
+
+    .card-body {
+        padding: 1rem;
+        flex-grow: 1; /* This ensures that the card body will expand to take up remaining space */
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .search-section input {
+        max-width: 250px; /* Limit the width of the search input */
+    }
+
+    /* New Style Changes */
+    /* Remove text decoration (underline) and set the text color to black */
+    .card-link, .card-link:hover {
+        text-decoration: none; /* No underline */
+        color: black; /* Set text color to black */
+    }
+
+    .card-link:focus {
+            color: black; /* Ensure the text stays black even on focus */
+    }
+</style>
+
+

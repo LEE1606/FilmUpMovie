@@ -1,0 +1,21 @@
+﻿@page
+@model FilmUpMovie.Pages.Payments.DetailsModel
+
+<h1>Payment Details</h1>
+
+<div>
+    <h2>Payment</h2>
+    <p><strong>ID:</strong> @Model.Payment.ID</p>
+    <p><strong>Pay Date:</strong> @Model.Payment.PayDate.ToShortDateString()</p>
+    <p><strong>Total Work Time:</strong> @Model.Payment.TotalWorkTime</p>
+    <p><strong>Pay Amount:</strong> RM @Model.Payment.PayAmount</p>
+</div>
+
+<div>
+    <h2>Staff Information</h2>
+    <p><strong>Name:</strong> @Model.Payment.Staff.StaffName</p>
+    <p><strong>Email:</strong> @Model.Payment.Staff.StaffEmail</p>
+    <p><strong>Phone:</strong> @Model.Payment.Staff.StaffPhoneNumber</p>
+</div>
+
+<a asp-page="./Index">Back to List</a>

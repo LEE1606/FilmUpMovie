@@ -1,0 +1,48 @@
+﻿@page
+@model FilmUpMovie.Pages.ShowTimes.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ShowTime</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ShowTime.Movie.Title" class="control-label"></label>
+                <select asp-for="ShowTime.MovieID" class ="form-control" asp-items="ViewBag.MovieTitle"></select>
+                <span asp-validation-for="ShowTime.MovieID" class="text-danger"></span>
+            </div>         
+            <div class="form-group">
+                <label asp-for="ShowTime.Movie.ReleaseDate" class="control-label"></label>
+                <select asp-for="ShowTime.MovieID" class="form-control" asp-items="ViewBag.MovieReleaseDate"></select>
+                <span asp-validation-for="ShowTime.MovieID" class="text-danger"></span>
+			</div>
+            <div class="form-group">
+				<label asp-for="ShowTime.ShowRoom.Experience" class="control-label"></label>
+				<select asp-for="ShowTime.ShowRoomID" class="form-control" asp-items="ViewBag.RoomExperience"></select>
+			</div>
+            <div class="form-group">
+                <label asp-for="ShowTime.Time" class="control-label"></label>
+                <input asp-for="ShowTime.Time" class="form-control" />
+                <span asp-validation-for="ShowTime.Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

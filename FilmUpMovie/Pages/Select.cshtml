@@ -1,0 +1,229 @@
+﻿@page
+@model FilmUpMovie.Pages.Select.SelectModel
+
+@{
+    ViewData["Title"] = "Seat Selection";
+}
+
+<h1>Select Seats</h1>
+
+<!-- Movie and Showtime Details -->
+<div class="details-container">
+    <h4>Movie: @Model.ShowTime.Movie.Title</h4>
+    <p>Showtime: @Model.ShowTime.Time</p>
+</div>
+
+<!-- Error Message Placeholder -->
+<div class="error-message" id="formError" style="display: none;"></div>
+
+<!-- Seat Chart Section -->
+<form method="post" id="seatForm">
+    <div class="seat-chart">
+        <!-- Displaying the Screen -->
+        <div class="screen">Screen</div>
+
+        <div class="seats-grid">
+            @foreach (var seat in Model.Seats)
+            {
+                <div class="seat-item">
+                    <input type="checkbox"
+                           name="selectedSeats"
+                           value="@seat.SeatID"
+                    @(seat.Status == "Booked" ? "disabled" : "")
+                           class="seat-checkbox" />
+                    <label class="seat-label @(seat.Status == "Available" ? "available" : "unavailable")">
+                        Seat @seat.SeatNumber
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Confirm Button -->
+    <div class="button-container">
+        <button type="submit" id="confirmButton" class="confirm-button">Confirm - 0 tickets</button>
+    </div>
+</form>
+
+<!-- Back Button -->
+<div class="button-container">
+    <a asp-page="/ShowTimes/Details" asp-route-id="@Model.ShowTime.ShowTimeID" class="btn btn-secondary">Back to Showtime</a>
+</div>
+
+<!-- Styles -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #0044cc;
+        margin-top: 20px;
+    }
+
+    .error-message {
+        color: #cc0000;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .seat-chart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+    }
+
+    .screen {
+        background-color: #0044cc;
+        color: white;
+        width: 80%;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .seats-grid {
+        display: grid;
+        grid-template-columns: repeat(6, auto);
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .seat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .seat-label {
+        padding: 10px;
+        width: 60px;
+        text-align: center;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+        .seat-label.available {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+
+        .seat-label.unavailable {
+            background-color: #dc3545;
+            color: white;
+            cursor: not-allowed;
+        }
+
+    .confirm-button {
+        background-color: #0044cc;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+        .confirm-button:hover {
+            background-color: #0033a0;
+        }
+
+    /* Separate button container */
+    .button-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .details-container {
+        background-color: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px auto;
+        width: 80%;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .details-container h4 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .details-container p {
+            margin: 0;
+            color: #555;
+        }
+</style>
+
+<!-- Seat Selection Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const seatForm = document.getElementById("seatForm");
+        const confirmButton = document.getElementById("confirmButton");
+        const errorDiv = document.getElementById("formError");
+
+        // Validate form submission
+        seatForm.addEventListener("submit", (event) => {
+            const selectedSeats = document.querySelectorAll(".seat-checkbox:checked").length;
+
+            if (selectedSeats === 0) {
+                // Prevent form submission
+                event.preventDefault();
+
+                // Display error message
+                errorDiv.style.display = "block";
+                errorDiv.textContent = "Please select at least one seat before confirming.";
+            }
+        });
+
+        // Attach listeners to checkboxes for dynamic updates
+        attachSeatCheckboxListeners();
+    });
+
+    // Function to attach seat checkbox listeners
+    function attachSeatCheckboxListeners() {
+        const checkboxes = document.querySelectorAll(".seat-checkbox");
+        const confirmButton = document.getElementById("confirmButton");
+        const errorDiv = document.getElementById("formError");
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", () => {
+                const selectedSeats = document.querySelectorAll(".seat-checkbox:checked").length;
+
+                // Update confirm button text dynamically
+                confirmButton.textContent = `Confirm - ${selectedSeats} tickets`;
+
+                // Hide error message if at least one seat is selected
+                if (selectedSeats > 0) {
+                    errorDiv.style.display = "none";
+                }
+            });
+        });
+    }
+</script>

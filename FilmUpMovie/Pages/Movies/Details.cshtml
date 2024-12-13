@@ -1,0 +1,108 @@
+﻿@page
+@model FilmUpMovie.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="mb-4">Details</h1>
+
+<div class="row">
+    <!-- Poster Image Section -->
+    <div class="col-md-4 justify-content-between align-items-center">
+        @if (Model.Movie.PosterImage != null)
+        {
+            <img src="data:image/png;base64,@Convert.ToBase64String(Model.Movie.PosterImage)"
+                 alt="Poster Image"
+                 class="img-thumbnail"
+                 style="width: 100%; max-width: 300px; height: auto;" />
+        }
+        else
+        {
+            <span class="text-muted">No Image Available</span>
+        }
+    </div>
+
+    <!-- Movie Details Section -->
+    <div class="col-md-8">
+        <h2>Movie</h2>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Title)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Title)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.ReleaseDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.ReleaseDate)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Price)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Price)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Genre)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Genre)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Rating)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Rating)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Movie.Status)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Movie.Status)</dd>
+        </dl>
+
+        <!-- Approve/Reject Buttons -->
+        @if (Model.Movie.Status != MovieStatus.Available)
+        {
+            @if ((await AuthorizationService.AuthorizeAsync(
+           User, Model.Movie, Operations.Approve)).Succeeded)
+            {
+                <form style="display:inline;" method="post">
+                    <input type="hidden" name="id" value="@Model.Movie.ID" />
+                    <input type="hidden" name="status" value="@MovieStatus.Available" />
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+            }
+        }
+
+        @if (Model.Movie.Status != MovieStatus.Rejected)
+        {
+            @if ((await AuthorizationService.AuthorizeAsync(
+           User, Model.Movie, Operations.Reject)).Succeeded)
+            {
+                <form style="display:inline;" method="post">
+                    <input type="hidden" name="id" value="@Model.Movie.ID" />
+                    <input type="hidden" name="status" value="@MovieStatus.Rejected" />
+                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            }
+        }
+
+        <!-- Action Buttons -->
+        <div class="mt-3">
+            @if ((await AuthorizationService.AuthorizeAsync(
+            User, Model.Movie,
+            Operations.Update)).Succeeded)
+            {
+                <a asp-page="./Edit" asp-route-id="@Model.Movie.ID" class="btn btn-warning btn-sm">Edit</a>
+            }
+
+            <h4>Showtimes</h4>
+            <hr />
+            @if (Model.Movie.ShowTimes != null && Model.Movie.ShowTimes.Any())
+            {
+                <ul>
+                    @foreach (var showtime in Model.Movie.ShowTimes)
+                    {
+                        <li>
+                            <a asp-page="/ShowTimes/Details" asp-route-id="@showtime.ShowTimeID" class="btn btn-primary btn-sm">
+                                View Showtime: @showtime.Time
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No showtimes available for this movie.</p>
+            }
+ 
+        </div>
+    </div>
+</div>

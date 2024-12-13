@@ -1,0 +1,46 @@
+﻿@page
+@model FilmUpMovie.Pages.ComboMainModel
+@{
+    ViewData["Title"] = "Combo Offers";
+}
+
+<div class="container">
+    <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Combos</h1>
+        </div>
+    </header>
+
+    <!-- Combo Section -->
+    <main>
+        <section class="combo">
+            <div class="product-grid">
+                @foreach (var combo in Model.Combos)
+                {
+                    <div class="card">
+                        @if (combo.ComboImage != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(combo.ComboImage)" alt="Combo Image" class="product-img-small" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default-combo.jpg" alt="Combo Image" class="product-img-small" />
+                        }
+                        <h3>@combo.Name</h3>
+                        <p class="price">@combo.Price.ToString("C")</p>
+                        <p>@combo.Description</p>
+
+                        <!-- Add to Cart Form -->
+                        <form method="post" asp-page-handler="AddToCart">
+                            <input type="hidden" name="comboId" value="@combo.Combo_ID" />
+                            <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </section>
+    </main>
+</div>

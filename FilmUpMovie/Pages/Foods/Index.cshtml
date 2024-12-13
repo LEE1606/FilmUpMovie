@@ -1,0 +1,56 @@
+﻿@page
+@model FilmUpMovie.Pages.Foods.IndexModel
+
+@{
+    ViewData["Title"] = "Food List";
+}
+
+<div class="container">
+    <h1 class="mt-4">Food List</h1>
+    <p>
+        <a asp-page="Create" class="btn btn-success mb-3">+ Add New Food</a>
+    </p>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Food[0].Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Food[0].Price)</th>
+                <th>@Html.DisplayNameFor(model => model.Food[0].Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Food[0].Category)</th>
+                <th>@Html.DisplayNameFor(model => model.Food[0].IsNewArrival)</th>
+                <th>@Html.DisplayNameFor(model => model.Food[0].IsOnSale)</th>
+                <th>Image</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Food)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                    <td>@(item.IsNewArrival ? "Yes" : "No")</td>
+                    <td>@(item.IsOnSale ? "Yes" : "No")</td>
+                    <td class="text-center">
+                        @if (item.FoodImage != null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(item.FoodImage)" alt="Food Image" class="img-thumbnail" style="width: 100px; height: auto;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Image</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <a asp-page="./Edit" asp-route-id="@item.F_ID" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-page="./Details" asp-route-id="@item.F_ID" class="btn btn-sm btn-info">Details</a>
+                        <a asp-page="./Delete" asp-route-id="@item.F_ID" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

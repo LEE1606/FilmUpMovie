@@ -1,0 +1,50 @@
+﻿@page
+@model FilmUpMovie.Pages.Cinemas.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Cinema</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CinemaViewModels.CinemaID" />
+            <div class="form-group">
+                <label asp-for="CinemaViewModels.Name" class="control-label"></label>
+                <input asp-for="CinemaViewModels.Name" class="form-control" />
+                <span asp-validation-for="CinemaViewModels.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CinemaViewModels.Location" class="control-label"></label>
+                <input asp-for="CinemaViewModels.Location" class="form-control" />
+                <span asp-validation-for="CinemaViewModels.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CinemaViewModels.NumOfHall" class="control-label"></label>
+                <input asp-for="CinemaViewModels.NumOfHall" class="form-control" />
+                <span asp-validation-for="CinemaViewModels.NumOfHall" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CinemaViewModels.CinemaImageFile" class="control-label"></label>
+                <input asp-for="CinemaViewModels.CinemaImageFile" type="file" class="form-control" />
+                <span asp-validation-for="CinemaViewModels.CinemaImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

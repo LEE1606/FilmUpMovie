@@ -1,0 +1,71 @@
+﻿@page "{id:int}"
+@model FilmUpMovie.Pages.Foods.EditModel
+
+@{
+    ViewData["Title"] = "Edit Food";
+}
+
+<h1>Edit Food</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FoodViewModel.F_ID" />
+
+            <div class="form-group">
+                <label asp-for="FoodViewModel.Name" class="control-label"></label>
+                <input asp-for="FoodViewModel.Name" class="form-control" />
+                <span asp-validation-for="FoodViewModel.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FoodViewModel.Price" class="control-label"></label>
+                <input asp-for="FoodViewModel.Price" class="form-control" />
+                <span asp-validation-for="FoodViewModel.Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FoodViewModel.Description" class="control-label"></label>
+                <input asp-for="FoodViewModel.Description" class="form-control" />
+                <span asp-validation-for="FoodViewModel.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FoodViewModel.Category" class="control-label"></label>
+                <input asp-for="FoodViewModel.Category" class="form-control" />
+                <span asp-validation-for="FoodViewModel.Category" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="FoodViewModel.IsNewArrival" class="form-check-input" />
+                <label asp-for="FoodViewModel.IsNewArrival" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="FoodViewModel.IsOnSale" class="form-check-input" />
+                <label asp-for="FoodViewModel.IsOnSale" class="form-check-label"></label>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FoodViewModel.ImageFile" class="control-label"></label>
+                <input asp-for="FoodViewModel.ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="FoodViewModel.ImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

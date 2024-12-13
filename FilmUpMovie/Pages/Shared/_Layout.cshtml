@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FlimUP</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FlimUpMovie.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <div class="container">
+               <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index">
+                <img src="~/images/logo.png" alt="FilmUP Logo" style="height: 40px; width: auto; margin-right: 10px;" />
+                FilmUP
+            </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-page="/Index">Home</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-page="/Movies/Index">Movies</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="cinemas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cinemas
+                            </a>
+                            <ul class="dropdown-menu bg-dark" aria-labelledby="cinemaDropdown">
+                                <li><a class="dropdown-item text-light" asp-page="/Cinemas/Index">FilmUp Cinema</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/ShowRooms/Index">ShowRooms</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="foodBeverageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Food & Beverages
+                            </a>
+                            <ul class="dropdown-menu bg-dark" aria-labelledby="foodBeverageDropdown">
+                                <li><a class="nav-link text-light" asp-page="/Main">Main</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/Foods/Index">Foods</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/Beverages/Index">Beverages</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/Combos/Index">Combos</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="humanresourceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Human Resource
+                            </a>
+                            <ul class="dropdown-menu bg-dark" aria-labelledby="humanresourceDropdown">
+                                <li><a class="dropdown-item text-light" asp-page="/LeaveApplications/Index">LeaveApplications</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/Staffs/Index">Staffs</a></li>
+                                <li><a class="dropdown-item text-light" asp-page="/Payments/Index">Payments</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-page="/Blogging/BlogPage">Blog</a>
+                        </li>
+
+
+                        <!-- Cart Link -->
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-page="/Carts/Index">Cart</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; 2024 - FlimUP - <a asp-area="" asp-page="/Privacy">Privacy</a> | <a asp-area="" asp-page="/Terms">Terms</a> | <a href="#">Contact Us</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

@@ -1,0 +1,215 @@
+﻿@page
+@model FilmUpMovie.Pages.TicketPaymentModel
+
+@{
+    ViewData["Title"] = "Payment Details";
+}
+
+<div class="payment-container">
+    <h2 class="section-title">Payment Details</h2>
+
+    <!-- Payment Summary (to display when payment is successful) -->
+    <div class="payment-summary">
+        <p><strong>Email Confirmation:</strong> @Model.Email</p>
+        <p><strong>Total Amount:</strong> RM @Model.TotalCost</p>
+    </div>
+
+    <!-- Payment Method Dropdown -->
+    <label for="paymentMethod" class="payment-method-label">Choose Payment Method</label>
+    <select id="paymentMethod" name="paymentMethod" class="payment-method-select" onchange="showPaymentOptions()">
+        <option value="" disabled selected>Select Payment Method</option>
+        <option value="credit">Credit Card</option>
+        <option value="paypal">PayPal</option>
+        <option value="bank">Bank Transfer</option>
+    </select>
+
+    <!-- Payment Method Forms -->
+    <div id="credit-card-info" class="payment-option" style="display:none;">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required />
+        <label for="expiryDate">Expiry Date</label>
+        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required />
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required />
+    </div>
+
+    <div id="paypal-info" class="payment-option" style="display:none;">
+        <label for="paypalEmail">PayPal Email</label>
+        <input type="email" id="paypalEmail" name="paypalEmail" placeholder="Enter your PayPal email" required />
+    </div>
+
+    <div id="bank-info" class="payment-option" style="display:none;">
+        <label for="bankAccount">Bank Account Number</label>
+        <input type="text" id="bankAccount" name="bankAccount" placeholder="Enter your bank account number" required />
+        <label for="bankName">Bank Name</label>
+        <input type="text" id="bankName" name="bankName" placeholder="Enter your bank name" required />
+    </div>
+
+    <!-- Payment Form -->
+    <form method="get" asp-page="/Confirmation" onsubmit="handleConfirmation(event)">
+        <input type="hidden" name="totalCost" value="@Model.TotalCost" />
+        <input type="hidden" name="seats" value="@string.Join(",", Model.SelectedSeats)" />
+        <button type="submit" class="pay-button">Proceed to Pay</button>
+    </form>
+
+    <!-- Cancel Button -->
+    <button type="button" onclick="window.location.href='@Url.Page("/Index")'" class="btn cancel-btn">Cancel</button>
+</div>
+
+<script>
+    function showPaymentOptions() {
+        var paymentMethod = document.getElementById("paymentMethod").value;
+
+        // Hide all payment options initially
+        document.getElementById("credit-card-info").style.display = "none";
+        document.getElementById("paypal-info").style.display = "none";
+        document.getElementById("bank-info").style.display = "none";
+
+        // Show the selected payment option
+        if (paymentMethod === "credit") {
+            document.getElementById("credit-card-info").style.display = "block";
+        } else if (paymentMethod === "paypal") {
+            document.getElementById("paypal-info").style.display = "block";
+        } else if (paymentMethod === "bank") {
+            document.getElementById("bank-info").style.display = "block";
+        }
+    }
+
+    function handleConfirmation(event) {
+        var paymentMethod = document.getElementById("paymentMethod").value;
+        var isValid = true;
+
+        if (!paymentMethod) {
+            alert("Please select a payment method.");
+            isValid = false;
+        }
+
+        if (paymentMethod === "credit") {
+            var cardNumber = document.getElementById("cardNumber").value;
+            var expiryDate = document.getElementById("expiryDate").value;
+            var cvv = document.getElementById("cvv").value;
+            if (!cardNumber || !expiryDate || !cvv) {
+                alert("Please enter all credit card details.");
+                isValid = false;
+            }
+        } else if (paymentMethod === "paypal") {
+            var paypalEmail = document.getElementById("paypalEmail").value;
+            if (!paypalEmail) {
+                alert("Please enter your PayPal email.");
+                isValid = false;
+            }
+        } else if (paymentMethod === "bank") {
+            var bankAccount = document.getElementById("bankAccount").value;
+            var bankName = document.getElementById("bankName").value;
+            if (!bankAccount || !bankName) {
+                alert("Please enter all bank transfer details.");
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Stop form submission if validation fails
+        }
+    }
+</script>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .payment-container {
+        background-color: #fff;
+        width: 450px;
+        margin: 50px auto;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        font-size: 26px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .payment-summary {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .payment-method-label {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    .payment-method-select,
+    .payment-option input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        background-color: #fafafa;
+    }
+
+    .pay-button {
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .pay-button:hover {
+            background-color: #45a049;
+        }
+
+    .cancel-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+    }
+
+        .cancel-btn:hover {
+            background-color: #c0392b;
+        }
+
+    .message {
+        padding: 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+        text-align: center;
+    }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .message .icon {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+    .message-text {
+        font-size: 18px;
+    }
+</style>

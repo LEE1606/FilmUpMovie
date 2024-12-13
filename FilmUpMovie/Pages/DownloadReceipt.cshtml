@@ -1,0 +1,18 @@
+﻿@page
+@model FilmUpMovie.Pages.DownloadReceiptModel
+
+@{
+    var content = Model.ReceiptContent; // Your receipt content
+    var fileName = "Receipt.txt";
+
+    // Set the correct content type for the file download
+    Response.ContentType = "text/plain";
+    Response.Headers.Add("Content-Disposition", $"attachment; filename={fileName}");
+
+    // Write the receipt content to the response body
+    Response.WriteAsync(content);
+
+    // Flush and close the response to ensure the file is sent for download
+    Response.Body.Flush();
+    Response.Body.Close();
+}

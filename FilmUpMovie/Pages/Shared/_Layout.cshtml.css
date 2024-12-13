@@ -1,0 +1,256 @@
+﻿/* General Layout Styles */
+
+/* Body Styling */
+body {
+    background-color: #121212; /* Dark background */
+    color: #f5f5f5; /* Light text */
+    font-family: Arial, sans-serif; /* General font */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for layout */
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styling */
+header {
+    background-color: #343a40; /* Dark header background */
+    color: white;
+    padding: 10px;
+}
+
+    header .logo h1 {
+        font-size: 2rem;
+        margin: 0; /* Prevents extra margin */
+    }
+
+/* Navbar Styling */
+.navbar-dark {
+    background-color: #000000; /* Black navbar */
+}
+
+    .navbar-dark .nav-link {
+        color: #f5f5f5; /* Light text for links */
+    }
+
+        .navbar-dark .nav-link:hover {
+            color: #ffcc00; /* Highlight color for links on hover */
+        }
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: #000000; /* Black dropdown background */
+    border: none; /* No border */
+}
+
+.dropdown-item {
+    color: #f5f5f5; /* Light text for dropdown items */
+}
+
+    .dropdown-item:hover {
+        background-color: #ffcc00; /* Yellow highlight on hover */
+        color: #000000; /* Black text on hover */
+    }
+
+/* Search Box Styling */
+.search input {
+    padding: 5px;
+    width: 200px;
+    background-color: #2c2f36;
+    border: 1px solid #444;
+    color: #f5f5f5;
+}
+
+    .search input::placeholder {
+        color: #bbb;
+    }
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row by default */
+    gap: 20px;
+    padding: 10px;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 items per row on smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .product-grid {
+        grid-template-columns: 1fr; /* 1 item per row on mobile screens */
+    }
+}
+
+/* Product Image Styling */
+.product-img-small {
+    width: 100px; /* Set width to 100px */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
+    object-fit: cover; /* Ensures image scales properly without stretching */
+    border-radius: 5px; /* Optional: rounded corners */
+    margin: 0 auto; /* Center the image */
+}
+
+.product img {
+    width: 100px; /* Set image width to 100px */
+    height: auto; /* Automatically adjust height to maintain aspect ratio */
+    object-fit: cover; /* Ensures the image doesn't stretch */
+    margin: 0 auto; /* Center the image */
+}
+
+/* Product Card Styling */
+.product {
+    background-color: #212121; /* Darker card background */
+    color: #f5f5f5; /* Light text */
+    border: 1px solid #333;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .product img:hover {
+        transform: scale(1.05); /* Slight zoom effect on hover */
+    }
+
+    .product h3 {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+
+    .product p {
+        font-size: 0.9rem;
+    }
+
+/* Button Styling */
+a.btn {
+    margin: 10px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    a.btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+/* Footer Styling */
+footer {
+    background-color: #000000; /* Match navbar for consistency */
+    color: #f5f5f5; /* Light text */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: translateY(-5px); /* Slight lift effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adds depth */
+}
+
+/* Browse All Button Styling */
+.browse-all {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .browse-all:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+/* Custom Styling for Search Box */
+.search input {
+    background-color: #2c2f36; /* Dark input background */
+    color: #fff; /* White text */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+.movie-poster {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+    .movie-poster:hover {
+        transform: scale(1.1); /* Zoom effect */
+        opacity: 0.9; /* Slight opacity change */
+    }
+
+/* Card link to remove underline and style anchor tag */
+.card-link {
+    text-decoration: none;
+}
+
+/* Ensure the image is responsive and maintains aspect ratio */
+.image-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Filter button styling */
+.filter-button {
+    cursor: pointer; /* Pointer cursor for interactivity */
+    padding: 5px 15px;
+    font-size: 18px;
+    color: #6c757d; /* Default color (gray) */
+    font-weight: bold;
+    text-decoration: none; /* No underline */
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+    /* Hover effect */
+    .filter-button:hover {
+        color: #ff6600; /* Highlight color on hover (orange) */
+        transform: scale(1.1); /* Slight zoom effect */
+    }
+
+    /* Active filter state */
+    .filter-button.active {
+        color: #007bff; /* Active color (blue) */
+        border-bottom: 2px solid #007bff; /* Underline to indicate active filter */
+    }
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+a.btn {
+    margin: 10px;
+}
+
+.hero-section {
+    background-image: url('/images/placeholder.jpg'); /* Your background image path */
+    background-size: cover;
+    background-position: center center;
+    height: 400px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 300px; /* Adjust height on smaller screens */
+    }
+}

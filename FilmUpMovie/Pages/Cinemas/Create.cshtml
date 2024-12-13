@@ -1,0 +1,49 @@
+﻿@page
+@model FilmUpMovie.Pages.Cinemas.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Cinema</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cinema.Name" class="control-label"></label>
+                <input asp-for="Cinema.Name" class="form-control" />
+                <span asp-validation-for="Cinema.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cinema.Location" class="control-label"></label>
+                <input asp-for="Cinema.Location" class="form-control" />
+                <span asp-validation-for="Cinema.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cinema.NumOfHall" class="control-label"></label>
+                <input asp-for="Cinema.NumOfHall" class="form-control" />
+                <span asp-validation-for="Cinema.NumOfHall" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CinemaImageFile" class="control-label"></label>
+                <input asp-for="CinemaImageFile" type="file" class="form-control" />
+                <span asp-validation-for="CinemaImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

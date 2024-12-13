@@ -1,0 +1,53 @@
+﻿@page
+@model FilmUpMovie.Pages.Beverages.IndexModel
+
+@{
+    ViewData["Title"] = "Beverage List";
+}
+
+<div class="container">
+    <h1 class="mt-4">Beverage List</h1>
+    <p>
+        <a asp-page="Create" class="btn btn-success mb-3">+ Add New Beverage</a>
+    </p>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Beverage[0].Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Beverage[0].Price)</th>
+                <th>@Html.DisplayNameFor(model => model.Beverage[0].Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Beverage[0].IsNewArrival)</th>
+                <th>@Html.DisplayNameFor(model => model.Beverage[0].IsOnSale)</th>
+                <th>Image</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Beverage)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@(item.IsNewArrival ? "Yes" : "No")</td>
+                    <td>@(item.IsOnSale ? "Yes" : "No")</td>
+                    <td class="text-center">
+                        @if (item.BeverageImage != null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(item.BeverageImage)" alt="Beverage Image" class="img-thumbnail" style="width: 100px; height: auto;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Image</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <a asp-page="./Edit" asp-route-id="@item.B_ID" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-page="./Details" asp-route-id="@item.B_ID" class="btn btn-sm btn-info">Details</a>
+                        <a asp-page="./Delete" asp-route-id="@item.B_ID" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,123 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero-section">
+    <div>
+        <h1 class="display-4">Welcome to FilmUP</h1>
+        <p class="lead">Explore the latest movies and check out their details.</p>
+    </div>
+</div>
+
+<div class="container text-center mt-5">
+    <!-- Filter Section: Clickable Text for Filtering -->
+    <div class="mb-4">
+        <span class="filter-button @(Model.MovieStatusFilter == "All" || string.IsNullOrEmpty(Model.MovieStatusFilter) ? "active" : "")"
+              onclick="filterMovies('All')">All Movies</span> |
+        <span class="filter-button @(Model.MovieStatusFilter == "NowShowing" ? "active" : "")"
+              onclick="filterMovies('NowShowing')">Now Showing</span> |
+        <span class="filter-button @(Model.MovieStatusFilter == "ComingSoon" ? "active" : "")"
+              onclick="filterMovies('ComingSoon')">Coming Soon</span>
+    </div>
+
+    <div class="row mt-4">
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="col-md-4 mb-4">
+                <!-- Movie Card -->
+                <a asp-page="/Movies/Details" asp-route-id="@movie.ID" class="card-link">
+                    <div class="card shadow-sm">
+                        <div class="image-container">
+                            <img src="@(movie.PosterImage != null
+                                ? $"data:image/jpeg;base64,{Convert.ToBase64String(movie.PosterImage)}"
+                                : "/images/placeholder.jpg")"
+                                 class="card-img-top movie-poster"
+                                 alt="Movie Poster"
+                                 style="width:100%; max-height: 510px; object-fit: cover;" />
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@movie.Title</h5>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Admin Actions -->
+                @*<div class="mt-2">
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                   User, movie,
+                   Operations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@movie.ID" class="btn btn-warning btn-sm">Edit</a>
+                    }
+
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                   User, movie,
+                   Operations.Delete)).Succeeded)
+                    {
+                        <a asp-page="./Delete" asp-route-id="@movie.ID" class="btn btn-danger btn-sm">Delete</a>
+                    }
+                </div>*@
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterMovies(status) {
+            // Get the current URL and add the filter as a query parameter
+            var currentUrl = window.location.href.split('?')[0];
+            window.location.href = currentUrl + "?movieStatusFilter=" + status;
+        }
+    </script>
+}
+
+<style>
+    /* Filter button styling */
+    .filter-button {
+        cursor: pointer; /* Pointer cursor for interactivity */
+        padding: 5px 15px;
+        font-size: 18px;
+        color: #6c757d; /* Default color (gray) */
+        font-weight: bold;
+        text-decoration: none; /* No underline */
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+        /* Hover effect */
+        .filter-button:hover {
+            color: #ff6600; /* Highlight color on hover (orange) */
+            transform: scale(1.1); /* Slight zoom effect */
+        }
+
+        /* Active filter state */
+        .filter-button.active {
+            color: #007bff; /* Active color (blue) */
+            border-bottom: 2px solid #007bff; /* Underline to indicate active filter */
+        }
+
+    .mb-4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-section {
+        background-image: url('/images/cinema-world.jpg'); /* Your background image path */
+        background-size: cover;
+        background-position: center center;
+        height: 400px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    media (max-width: 768px)
+    .hero-section {
+        height: 300px; /* Adjust height on smaller screens */
+    }
+
+</style>
